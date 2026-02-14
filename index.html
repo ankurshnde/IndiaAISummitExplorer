@@ -10,6 +10,144 @@
         rel="stylesheet">
     <title>India AI Summit 2026</title>
     <style>
+        /* Live Radar Strip */
+        .live-radar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ff3b30;
+            color: white;
+            z-index: 10000;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .radar-collapsed {
+            padding: 8px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .radar-expanded {
+            background: #2c2c2e;
+            padding: 15px;
+            display: none;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .live-radar.active .radar-expanded {
+            display: block;
+        }
+
+        .radar-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .radar-pulse {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 1.4s infinite;
+        }
+
+        .radar-section {
+            margin-bottom: 15px;
+        }
+
+        .radar-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #8e8e93;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .radar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .radar-card {
+            background: #3a3a3c;
+            border-bottom: 2px solid #ff3b30;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .radar-card h4 {
+            margin: 0 0 5px 0;
+            font-size: 0.85rem;
+            line-height: 1.2;
+            color: white;
+        }
+
+        .radar-card .meta {
+            font-size: 0.75rem;
+            color: #aeaeb2;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .radar-card .take-me {
+            margin-top: 8px;
+            background: #ff3b30;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .version-marker {
+            position: fixed;
+            top: 60px;
+            /* Below radar */
+            right: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            color: white;
+            z-index: 9999;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 6px rgba(255, 255, 255, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+
         /* CSS Variables for theming */
         :root {
             --bg-primary: #FFFFFF;
@@ -641,6 +779,221 @@
             border-radius: 8px;
             color: var(--text-primary);
         }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135.45deg, #09132d 0%, #201a54 51.52%, #1e3a8a 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.3;
+            animation: drift 60s linear infinite;
+        }
+
+        @keyframes drift {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 1000px 1000px;
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #b39ddb);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Live Section */
+        .live-section {
+            padding: 2rem 2rem 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .live-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .live-indicator {
+            width: 10px;
+            height: 10px;
+            background: #ff3b30;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px rgba(255, 59, 48, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 6px rgba(255, 59, 48, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
+            }
+        }
+
+        .live-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .live-card {
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 1rem;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.1);
+        }
+
+        .live-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #ff3b30;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* FAB */
+        .fab-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .fab-btn:hover {
+            transform: scale(1.1);
+            background: var(--accent-hover);
+        }
+
+        .fab-btn.active {
+            background: var(--bookmark-color);
+        }
+
+        @media (max-width: 768px) {
+
+            /* ... (keep existing media query content) ... */
+            .hero-section {
+                padding: 3rem 1rem;
+            }
+
+            .hero-title {
+                font-size: 1.75rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
 
@@ -651,8 +1004,8 @@
             <p>Loading schedule...</p>
         </div>
     </div>
-
     <script>
+        console.log('Script started');
         // State
         let sessions = [];
         let activeDay = '16th Feb';
@@ -662,6 +1015,8 @@
         let keywordFilter = 'all';
         let bookmarkedIds = new Set();
         let theme = 'light';
+        let showFavoritesOnly = false;
+        const mockNow = new Date('2026-02-16T10:00:00');
 
         // Extract keywords based on industry/sector/technology
         function extractKeywords(description, title, speakers = []) {
@@ -705,6 +1060,7 @@
             };
 
             const matched = [];
+
             for (const [keyword, patterns] of Object.entries(keywordMap)) {
                 for (const pattern of patterns) {
                     if (text.includes(pattern)) {
@@ -717,6 +1073,30 @@
             // Return up to 5 most relevant keywords
             return matched.slice(0, 5);
         }
+
+        // --- Live Section Helpers ---
+        function getLiveSessions() {
+            return sessions.filter(s => {
+                const sessionStart = new Date(`${s.date}${s.start} `.replace(/(st|nd|rd|th)/, ''));
+
+                const sessionEnd = new Date(`${s.date} ${s.end}`.replace(/(st|nd|rd|th)/, ''));
+                return mockNow >= sessionStart && mockNow <= sessionEnd;
+            });
+        }
+
+        function getUpcomingSessions() {
+            return sessions.filter(s => {
+                const sessionStart = new Date(`${s.date}${s.start} `.replace(/(st|nd|rd|th)/, ''));
+                return sessionStart > mockNow && sessionStart <= new Date(mockNow.getTime() + 15 * 60000);
+            });
+        }
+
+        function toggleFavoritesMode() {
+            showFavoritesOnly = !showFavoritesOnly;
+            render();
+        }
+
+        // ---------------------------
 
         // Load theme from localStorage
         function loadTheme() {
@@ -735,6 +1115,7 @@
         // Load bookmarks from localStorage
         function loadBookmarks() {
             const saved = localStorage.getItem('bookmarkedSessions');
+
             if (saved) {
                 bookmarkedIds = new Set(JSON.parse(saved));
             }
@@ -744,9 +1125,12 @@
         function toggleBookmark(id) {
             if (bookmarkedIds.has(id)) {
                 bookmarkedIds.delete(id);
-            } else {
+            }
+
+            else {
                 bookmarkedIds.add(id);
             }
+
             localStorage.setItem('bookmarkedSessions', JSON.stringify([...bookmarkedIds]));
             render();
         }
@@ -771,6 +1155,7 @@
         // Parse sessions data
         function parseSessions(data) {
             return data.map(s => ({
+
                 ...s,
                 start: s.time.match(/(\d{1,2}:\d{2}\s*[AP]M)/i)?.[1] || 'TBD',
                 end: s.time.match(/-\s*(\d{1,2}:\d{2}\s*[AP]M)/i)?.[1] || s.time.match(/(\d{1,2}:\d{2}\s*[AP]M)/i)?.[1] || 'TBD',
@@ -781,12 +1166,18 @@
         // Get filtered sessions
         function getFilteredSessions() {
             const sessionsByDay = {};
+
             sessions.forEach(s => {
                 if (!sessionsByDay[s.date]) sessionsByDay[s.date] = [];
                 sessionsByDay[s.date].push(s);
             });
 
             let daySessions = sessionsByDay[activeDay] || [];
+
+            // Apply favorites filter
+            if (showFavoritesOnly) {
+                daySessions = daySessions.filter(s => bookmarkedIds.has(s.id));
+            }
 
             // Apply time filter
             if (timeFilter !== 'all') {
@@ -800,17 +1191,13 @@
 
             // Apply keyword filter
             if (keywordFilter !== 'all') {
-                daySessions = daySessions.filter(s =>
-                    s.keywords && s.keywords.some(k => k.toLowerCase() === keywordFilter.toLowerCase())
-                );
+                daySessions = daySessions.filter(s => s.keywords && s.keywords.some(k => k.toLowerCase() === keywordFilter.toLowerCase()));
             }
 
             // Apply search
             if (searchQuery.trim()) {
                 const q = searchQuery.toLowerCase();
-                daySessions = daySessions.filter(s =>
-                    (s.title + s.description + s.speakers.join(' ') + s.location).toLowerCase().includes(q)
-                );
+                daySessions = daySessions.filter(s => (s.title + s.description + s.speakers.join(' ') + s.location).toLowerCase().includes(q));
             }
 
             return daySessions;
@@ -819,6 +1206,7 @@
         // Group sessions by time slot
         function groupByTimeSlot(sessions) {
             const grouped = {};
+
             sessions.forEach(s => {
                 const slot = `${s.start} – ${s.end}`;
                 if (!grouped[slot]) grouped[slot] = [];
@@ -827,6 +1215,7 @@
 
             return Object.entries(grouped).sort((a, b) => {
                 const timeA = a[0].match(/(\d{1,2}):(\d{2})/);
+
                 const timeB = b[0].match(/(\d{1,2}):(\d{2})/);
                 if (!timeA || !timeB) return 0;
                 const hourA = parseInt(timeA[1]) + (a[0].includes('PM') && timeA[1] !== '12' ? 12 : 0);
@@ -838,6 +1227,7 @@
         // Get unique keywords
         function getUniqueKeywords() {
             const keywords = new Set();
+
             sessions.forEach(s => {
                 if (s.keywords) {
                     s.keywords.forEach(k => keywords.add(k));
@@ -849,6 +1239,7 @@
         // Get unique venues
         function getUniqueVenues() {
             const venues = new Set();
+
             sessions.forEach(s => {
                 const venue = s.location.split(' - ')[0];
                 if (venue) venues.add(venue);
@@ -859,10 +1250,12 @@
         // Get all dates
         function getAllDates() {
             const sessionsByDay = {};
+
             sessions.forEach(s => {
                 if (!sessionsByDay[s.date]) sessionsByDay[s.date] = [];
                 sessionsByDay[s.date].push(s);
             });
+
             return Object.keys(sessionsByDay).sort((a, b) => {
                 const dayA = parseInt(a.match(/\d+/)?.[0] || '0');
                 const dayB = parseInt(b.match(/\d+/)?.[0] || '0');
@@ -885,8 +1278,94 @@
                 sessionsByDay[s.date].push(s);
             });
 
+            const liveSessions = getLiveSessions();
+            const upcomingSessions = getUpcomingSessions();
+
             app.innerHTML = `
+                <div class="live-radar" id="live-radar" onclick="toggleRadar()">
+                    <div class="radar-collapsed">
+                        <div class="radar-indicator">
+                            <div class="radar-pulse"></div>
+                            ${liveSessions.length} sessions live now
+                        </div>
+                        <div style="font-size: 0.7rem; opacity: 0.9;">
+                            Tap to expand Radar
+                        </div>
+                    </div>
+                    <div class="radar-expanded" onclick="event.stopPropagation()">
+                        <div class="radar-section">
+                            <div class="radar-section-title">🔴 Happening Now</div>
+                            <div class="radar-grid">
+                                ${liveSessions.length > 0 ? liveSessions.map(s => `
+                                    <div class="radar-card">
+                                        <h4>${s.title}</h4>
+                                        <div class="meta">
+                                            <span>📍 ${s.location}</span>
+                                            <span>🕙 Ends ${s.end}</span>
+                                        </div>
+                                        <button class="take-me" onclick="showSessionModal(${s.id})">Take me there</button>
+                                    </div>
+                                `).join('') : '<div style="color: #aeaeb2; font-size: 0.8rem;">No sessions running right now</div>'}
+                            </div>
+                        </div>
+                        <div class="radar-section">
+                            <div class="radar-section-title">⏭ Up Next (15 min)</div>
+                            <div class="radar-grid">
+                                ${upcomingSessions.length > 0 ? upcomingSessions.map(s => `
+                                    <div class="radar-card" style="border-bottom-color: #aeaeb2;">
+                                        <h4>${s.title}</h4>
+                                        <div class="meta">
+                                            <span>📍 ${s.location}</span>
+                                            <span>🕒 Starts at ${s.start}</span>
+                                        </div>
+                                        <button class="take-me" onclick="showSessionModal(${s.id})">Take me there</button>
+                                    </div>
+                                `).join('') : '<div style="color: #aeaeb2; font-size: 0.8rem;">Nothing starting soon</div>'}
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 10px; border-top: 1px solid #3a3a3c; padding-top: 10px;">
+                            <button class="take-me" style="background: transparent; border: 1px solid #ff3b30;" onclick="toggleRadar()">Close Radar</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="summit-page">
+                    <div class="version-marker">
+                        v1.3.0 - RADAR+LIVE
+                    </div>
+
+                    <div class="hero-section">
+                        <div class="hero-content">
+                            <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-bottom: 2rem; font-size: 0.85rem; border-left: 4px solid #ff3b30; text-align: left; color: white;">
+                                <strong>Disclaimer:</strong> This is a fun project (v1.3.1). For official sessions and live updates, please visit <a href="https://impact.indiaai.gov.in/sessions" target="_blank" style="color: #ff3b30; font-weight: bold; text-decoration: underline;">impact.indiaai.gov.in/sessions</a>.
+                            </div>
+                            <h2 class="hero-subtitle">Impact Summit Sessions at Various Locations</h2>
+                            <h1 class="hero-title">AI IMPACT SUMMIT 2026</h1>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value">${sessions.length}+</div>
+                                    <div class="stat-label">Total Sessions</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">${(() => {
+                    const uniqueSpeakers = new Set();
+                    sessions.forEach(s => { if (s.speakers) s.speakers.forEach(sp => uniqueSpeakers.add(sp)); });
+                    return uniqueSpeakers.size;
+                })()}</div>
+                                    <div class="stat-label">Speakers</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">${allVenues.length}</div>
+                                    <div class="stat-label">Venues</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">${allKeywords.length}</div>
+                                    <div class="stat-label">Topics</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <header class="summit-header">
                         <div class="header-left">
                             <h1>India AI Summit 2026</h1>
@@ -901,27 +1380,28 @@
                         </div>
                         <div class="header-right">
                             <div class="filters">
-                                <select class="filter-select" value="${timeFilter}" onchange="setTimeFilter(this.value)">
-                                    <option value="all">All Times</option>
-                                    <option value="morning">Morning</option>
-                                    <option value="afternoon">Afternoon</option>
-                                    <option value="evening">Evening</option>
+                                <select class="filter-select" onchange="setTimeFilter(this.value)">
+                                    <option value="all" ${timeFilter === 'all' ? 'selected' : ''}>All Times</option>
+                                    <option value="morning" ${timeFilter === 'morning' ? 'selected' : ''}>Morning</option>
+                                    <option value="afternoon" ${timeFilter === 'afternoon' ? 'selected' : ''}>Afternoon</option>
+                                    <option value="evening" ${timeFilter === 'evening' ? 'selected' : ''}>Evening</option>
                                 </select>
-                                <select class="filter-select" value="${locationFilter}" onchange="setLocationFilter(this.value)">
-                                    <option value="all">All Venues</option>
+                                <select class="filter-select" onchange="setLocationFilter(this.value)">
+                                    <option value="all" ${locationFilter === 'all' ? 'selected' : ''}>All Venues</option>
                                     ${allVenues.map(venue => `
-                                        <option value="${venue}">${venue}</option>
+                                        <option value="${venue}" ${locationFilter === venue ? 'selected' : ''}>${venue}</option>
                                     `).join('')}
                                 </select>
-                                <select class="filter-select" value="${keywordFilter}" onchange="setKeywordFilter(this.value)">
-                                    <option value="all">All Topics</option>
+                                <select class="filter-select" onchange="setKeywordFilter(this.value)">
+                                    <option value="all" ${keywordFilter === 'all' ? 'selected' : ''}>All Topics</option>
                                     ${allKeywords.slice(0, 50).map(keyword => `
-                                        <option value="${keyword}">${keyword}</option>
+                                        <option value="${keyword}" ${keywordFilter === keyword ? 'selected' : ''}>${keyword}</option>
                                     `).join('')}
                                 </select>
                             </div>
                             <div class="search-container">
                                 <input 
+                                    id="search-input"
                                     type="text" 
                                     placeholder="Search sessions..." 
                                     value="${searchQuery}"
@@ -935,6 +1415,34 @@
                             </button>
                         </div>
                     </header>
+
+                    ${!showFavoritesOnly && (liveSessions.length > 0 || upcomingSessions.length > 0) ? `
+                        <div class="live-section">
+                            <div class="live-header">
+                                <div class="live-indicator"></div>
+                                <span>Happening Now & Up Next</span>
+                            </div>
+                            <div class="live-grid">
+                                ${liveSessions.map(session => `
+                                    <div class="live-card" onclick="showSessionModal(${session.id})">
+                                        <span class="live-badge">Live</span>
+                                        <div class="slot-time">🔴 ${session.start} – ${session.end}</div>
+                                        <h3 class="session-title">${session.title}</h3>
+                                        <div class="session-location">📍 ${session.location}</div>
+                                    </div>
+                                `).join('')}
+                                ${upcomingSessions.map(session => `
+                                    <div class="live-card" onclick="showSessionModal(${session.id})" style="border-style: dashed; opacity: 0.8;">
+                                        <span class="live-badge" style="background: var(--text-secondary);">Up Next</span>
+                                        <div class="slot-time">🕐 ${session.start} – ${session.end}</div>
+                                        <h3 class="session-title">${session.title}</h3>
+                                        <div class="session-location">📍 ${session.location}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''
+                }
 
                     <main class="schedule-content">
                         ${slotGroups.length === 0 ? `
@@ -974,19 +1482,24 @@
                             </section>
                         `).join('')}
                     </main>
-                </div>
-            `;
+
+                    <button class="fab-btn ${showFavoritesOnly ? 'active' : ''}" onclick="toggleFavoritesMode()" title="${showFavoritesOnly ? 'Show All Sessions' : 'Show Favorites'}">
+                        ${showFavoritesOnly ? '★' : '☆'}
+                    </button>
+                </div > `;
         }
 
         // Parse speaker name and affiliation
         function parseSpeaker(speakerString) {
             const parts = speakerString.split(',').map(s => s.trim());
+
             if (parts.length >= 2) {
                 return {
                     name: parts[0],
                     affiliation: parts.slice(1).join(', ')
                 };
             }
+
             return {
                 name: speakerString,
                 affiliation: ''
@@ -998,58 +1511,29 @@
             const session = sessions.find(s => s.id === sessionId);
             if (!session) return;
 
-            const modalHtml = `
-                <div class="modal-overlay visible" onclick="closeModal(event)">
-                    <div class="modal-content" onclick="event.stopPropagation()">
-                        <div class="modal-header">
-                            <h2 class="modal-title">${session.title}</h2>
-                            <button class="modal-close" onclick="closeModal()" title="Close">×</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="modal-section">
-                                <div class="modal-section-title">Time</div>
-                                <div class="modal-time">🕐 ${session.time}</div>
-                            </div>
+            const modalHtml = `<div class="modal-overlay visible" onclick="closeModal(event)"> <div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h2 class="modal-title">${session.title
+                }</h2><button class="modal-close" onclick="closeModal()" title="Close">×</button></div><div class="modal-body"><div class="modal-section"><div class="modal-section-title">Time</div><div class="modal-time">🕐 ${session.time
+                }</div></div><div class="modal-section"><div class="modal-section-title">Location</div><div class="modal-location">📍 ${session.location
+                }</div></div>${session.speakers && session.speakers.length > 0 ? `<div class="modal-section"><div class="modal-section-title">Speakers (${session.speakers.length
 
-                            <div class="modal-section">
-                                <div class="modal-section-title">Location</div>
-                                <div class="modal-location">📍 ${session.location}</div>
-                            </div>
+                    })</div><ul class="speaker-list">${session.speakers.map(speaker => {
+                        const {
+                            name, affiliation
+                        }
 
-                            ${session.speakers && session.speakers.length > 0 ? `
-                                <div class="modal-section">
-                                    <div class="modal-section-title">Speakers (${session.speakers.length})</div>
-                                    <ul class="speaker-list">
-                                        ${session.speakers.map(speaker => {
-                const { name, affiliation } = parseSpeaker(speaker);
-                return `
-                                                <li class="speaker-item">
-                                                    <div class="speaker-name">${name}</div>
-                                                    ${affiliation ? `<div class="speaker-affiliation">${affiliation}</div>` : ''}
-                                                </li>
-                                            `;
-            }).join('')}
-                                    </ul>
-                                </div>
-                            ` : ''}
+                            = parseSpeaker(speaker);
 
-                            ${session.description && session.description.trim() ? `
-                                <div class="modal-section">
-                                    <div class="modal-section-title">Description</div>
-                                    <p class="modal-description">${session.description}</p>
-                                </div>
-                            ` : ''}
-
-                            ${session.knowledge_partners && session.knowledge_partners.trim() ? `
-                                <div class="modal-section">
-                                    <div class="modal-section-title">Knowledge Partners</div>
-                                    <div class="knowledge-partners">${session.knowledge_partners}</div>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
+                        return `<li class="speaker-item"><div class="speaker-name">${name
+                            }</div>${affiliation ? `<div class="speaker-affiliation">${affiliation
+                                }</div>` : ''
+                            }</li>`;
+                    }).join('')
+                    }</ul></div>` : ''
+                }${session.description && session.description.trim() ? `<div class="modal-section"><div class="modal-section-title">Description</div><p class="modal-description">${session.description
+                    }</p></div>` : ''
+                }${session.knowledge_partners && session.knowledge_partners.trim() ? `<div class="modal-section"><div class="modal-section-title">Knowledge Partners</div><div class="knowledge-partners">${session.knowledge_partners
+                    }</div></div>` : ''
+                }</div></div></div>`;
 
             const modalContainer = document.getElementById('modal-container') || (() => {
                 const container = document.createElement('div');
@@ -1066,9 +1550,11 @@
         function closeModal(event) {
             if (event && event.target.classList.contains('modal-content')) return;
             const modalContainer = document.getElementById('modal-container');
+
             if (modalContainer) {
                 modalContainer.innerHTML = '';
             }
+
             document.body.style.overflow = '';
         }
 
@@ -1080,7 +1566,19 @@
 
         function setSearchQuery(query) {
             searchQuery = query;
+            const input = document.getElementById('search-input');
+            const selectionStart = input ? input.selectionStart : null;
+            const selectionEnd = input ? input.selectionEnd : null;
+
             render();
+
+            const newInput = document.getElementById('search-input');
+            if (newInput) {
+                newInput.focus();
+                if (selectionStart !== null) {
+                    newInput.setSelectionRange(selectionStart, selectionEnd);
+                }
+            }
         }
 
         function clearSearch() {
@@ -1103,17 +1601,38 @@
             render();
         }
 
+        // Toggle Radar Expanded View
+        function toggleRadar() {
+            const radar = document.getElementById('live-radar');
+            if (radar) radar.classList.toggle('active');
+        }
+
         // Initialize
         async function init() {
+            console.log('Script init called');
             loadTheme();
             loadBookmarks();
 
             try {
                 const response = await fetch('./data/sessions.json');
                 const data = await response.json();
+                console.log(`Fetched ${data.length} raw records`);
                 sessions = parseSessions(data);
+                console.log(`Parsed ${sessions.length} sessions`);
+
                 render();
-            } catch (error) {
+                console.log('Initial render complete');
+
+                // Start Radar Auto-Update logic (every 30s)
+                setInterval(() => {
+                    console.log('Pulse: Updating Radar...');
+                    // In a real app, mockNow would be new Date()
+                    // But for this summit demo, we keep it fixed unless we decide otherwise
+                    render();
+                }, 30000);
+            }
+            catch (error) {
+                console.error('Initialization error:', error);
                 document.getElementById('app').innerHTML = `
                     <div class="loading">
                         <h1>Error loading sessions</h1>

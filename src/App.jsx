@@ -1,6 +1,10 @@
 import React from 'react';
 import './index.css';
 import { extractKeywords } from './utils/keywords';
+import Hero from './components/Hero';
+import LiveSection from './components/LiveSection';
+import FavoritesFab from './components/FavoritesFab';
+import LiveRadar from './components/LiveRadar';
 
 function App() {
   const [sessions, setSessions] = React.useState([]);
@@ -12,6 +16,10 @@ function App() {
   const [locationFilter, setLocationFilter] = React.useState('all');
   const [keywordFilter, setKeywordFilter] = React.useState('all');
   const [bookmarkedIds, setBookmarkedIds] = React.useState(new Set());
+  const [showFavoritesOnly, setShowFavoritesOnly] = React.useState(false);
+
+  // Mock current time for demonstration (Feb 16, 10:00 AM)
+  const mockNow = React.useMemo(() => new Date('2026-02-16T10:00:00'), []);
 
   // Load theme from localStorage
   React.useEffect(() => {
@@ -131,6 +139,11 @@ function App() {
   const visibleSessions = React.useMemo(() => {
     let daySessions = sessionsByDay[activeDay] || [];
 
+    // Apply favorites filter
+    if (showFavoritesOnly) {
+      daySessions = daySessions.filter(s => bookmarkedIds.has(s.id));
+    }
+
     // Apply time filter
     if (timeFilter !== 'all') {
       daySessions = daySessions.filter(s => getTimeCategory(s.start) === timeFilter);
@@ -189,6 +202,27 @@ function App() {
 
   return (
     <div className="summit-page">
+      <div style={{ position: 'fixed', top: 0, left: 0, background: 'red', color: 'white', zIndex: 9999, padding: '2px 5px', fontSize: '10px' }}>
+        v1.2.0 - HERO+LIVE
+      </div>
+      <Hero sessions={sessions} />
+
+      {!showFavoritesOnly && (
+        <LiveSection
+          sessions={sessions}
+          currentTime={mockNow}
+          onSessionClick={(session) => {
+            // Optional: Toggle bookmark or scroll to session
+            toggleBookmark(session.id);
+          }}
+        />
+      )}
+
+      <FavoritesFab
+        isActive={showFavoritesOnly}
+        onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+      />
+
       <header className="summit-header">
         <div className="header-left">
           <h1>India AI Summit 2026</h1>
