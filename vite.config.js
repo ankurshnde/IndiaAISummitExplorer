@@ -7,12 +7,7 @@ export default defineConfig({
   base: '/IndiaAISummitExplorer/', // GitHub repo name for GitHub Pages
   build: {
     target: 'es2015',
-    minify: 'terser',
-    cssMinify: true,
-    rollupOptions: {
-      output: {
-        manualChunks: undefined
-      }
-    }
+    minify: 'esbuild', // Changed from ter ser to esbuild
+    cssMinify: true
   }
 })
