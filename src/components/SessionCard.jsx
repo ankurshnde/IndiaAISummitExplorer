@@ -51,10 +51,33 @@ const SessionCard = ({ session, onClick }) => {
                     color: 'var(--text-secondary)',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    marginBottom: 'var(--spacing-sm)'
                 }}>
                     {session.speakers.slice(0, 2).join(', ')}
                     {session.speakers.length > 2 && ` +${session.speakers.length - 2} more`}
+                </div>
+            )}
+
+            {session.keywords && session.keywords.length > 0 && (
+                <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 'var(--spacing-xs)',
+                    marginTop: 'var(--spacing-xs)'
+                }}>
+                    {session.keywords.map(keyword => (
+                        <span key={keyword} style={{
+                            fontSize: 'var(--font-size-xs)',
+                            background: 'var(--bg-secondary)',
+                            color: 'var(--text-secondary)',
+                            padding: '2px 8px',
+                            borderRadius: '4px',
+                            border: '1px solid var(--border)'
+                        }}>
+                            {keyword}
+                        </span>
+                    ))}
                 </div>
             )}
 

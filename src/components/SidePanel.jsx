@@ -102,9 +102,31 @@ const SidePanel = ({ session, similarSessions, onClose, onSessionClick }) => {
                         <div style={{
                             fontSize: 'var(--font-size-sm)',
                             color: 'var(--text-secondary)',
-                            marginBottom: 'var(--spacing-sm)'
+                            marginBottom: 'var(--spacing-md)'
                         }}>
                             📍 {session.location}
+                        </div>
+                    )}
+
+                    {session.keywords && session.keywords.length > 0 && (
+                        <div style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: 'var(--spacing-xs)',
+                            marginBottom: 'var(--spacing-sm)'
+                        }}>
+                            {session.keywords.map(keyword => (
+                                <span key={keyword} style={{
+                                    fontSize: 'var(--font-size-xs)',
+                                    background: 'var(--bg-secondary)',
+                                    color: 'var(--text-secondary)',
+                                    padding: '2px 8px',
+                                    borderRadius: '4px',
+                                    border: '1px solid var(--border)'
+                                }}>
+                                    {keyword}
+                                </span>
+                            ))}
                         </div>
                     )}
                 </div>

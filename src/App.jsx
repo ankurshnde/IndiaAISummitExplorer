@@ -1,5 +1,6 @@
 import React from 'react';
 import './index.css';
+import { extractKeywords } from './utils/keywords';
 
 function App() {
   const [sessions, setSessions] = React.useState([]);
@@ -9,6 +10,7 @@ function App() {
   const [theme, setTheme] = React.useState('light');
   const [timeFilter, setTimeFilter] = React.useState('all');
   const [locationFilter, setLocationFilter] = React.useState('all');
+  const [keywordFilter, setKeywordFilter] = React.useState('all');
   const [bookmarkedIds, setBookmarkedIds] = React.useState(new Set());
 
   // Load theme from localStorage
@@ -35,7 +37,8 @@ function App() {
           ...s,
           start: s.time.match(/(\d{1,2}:\d{2}\s*[AP]M)/i)?.[1] || 'TBD',
           end: s.time.match(/-\s*(\d{1,2}:\d{2}\s*[AP]M)/i)?.[1] || s.time.match(/(\d{1,2}:\d{2}\s*[AP]M)/i)?.[1] || 'TBD',
-          text: s.description || ''
+          text: s.description || '',
+          keywords: extractKeywords(s.description, s.title, s.speakers)
         }));
         setSessions(parsed);
         setLoading(false);
@@ -113,6 +116,17 @@ function App() {
     return Array.from(venues).sort();
   }, [sessions]);
 
+  // Get unique keywords for filter
+  const allKeywords = React.useMemo(() => {
+    const keywords = new Set();
+    sessions.forEach(s => {
+      if (s.keywords) {
+        s.keywords.forEach(k => keywords.add(k));
+      }
+    });
+    return Array.from(keywords).sort();
+  }, [sessions]);
+
   // Filter sessions for active day
   const visibleSessions = React.useMemo(() => {
     let daySessions = sessionsByDay[activeDay] || [];
@@ -127,16 +141,23 @@ function App() {
       daySessions = daySessions.filter(s => s.location.startsWith(locationFilter));
     }
 
-    // Apply keyword search
+    // Apply keyword filter
+    if (keywordFilter !== 'all') {
+      daySessions = daySessions.filter(s =>
+        s.keywords && s.keywords.includes(keywordFilter)
+      );
+    }
+
+    // Apply search
     if (query.trim()) {
       const q = query.toLowerCase();
       daySessions = daySessions.filter(s =>
-        (s.title + s.text + s.speakers.join(' ') + s.location).toLowerCase().includes(q)
+        (s.title + s.text + s.speakers.join(' ') + s.location + (s.keywords || []).join(' ')).toLowerCase().includes(q)
       );
     }
 
     return daySessions;
-  }, [sessionsByDay, activeDay, query, timeFilter, locationFilter]);
+  }, [sessionsByDay, activeDay, query, timeFilter, locationFilter, keywordFilter]);
 
   // Group visible sessions by time slot
   const slotGroups = React.useMemo(() => {
@@ -206,6 +227,16 @@ function App() {
                 <option key={venue} value={venue}>{venue}</option>
               ))}
             </select>
+            <select
+              className="filter-select"
+              value={keywordFilter}
+              onChange={(e) => setKeywordFilter(e.target.value)}
+            >
+              <option value="all">All Topics</option>
+              {allKeywords.map(keyword => (
+                <option key={keyword} value={keyword}>{keyword}</option>
+              ))}
+            </select>
           </div>
           <div className="search-container">
             <input
@@ -255,6 +286,13 @@ function App() {
                       <div className="session-speakers">
                         <strong>Speakers:</strong> {session.speakers.slice(0, 2).join(', ')}
                         {session.speakers.length > 2 && ` +${session.speakers.length - 2} more`}
+                      </div>
+                    )}
+                    {session.keywords && session.keywords.length > 0 && (
+                      <div className="session-keywords">
+                        {session.keywords.map(keyword => (
+                          <span key={keyword} className="keyword-tag">{keyword}</span>
+                        ))}
                       </div>
                     )}
                     <p className="session-description">{session.text.substring(0, 150)}...</p>

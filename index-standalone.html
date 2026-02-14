@@ -663,33 +663,59 @@
         let bookmarkedIds = new Set();
         let theme = 'light';
 
-        // Extract keywords from description
-        function extractKeywords(description) {
-            if (!description || description.trim().length < 10) return [];
+        // Extract keywords based on industry/sector/technology
+        function extractKeywords(description, title, speakers = []) {
+            if (!description && !title) return [];
 
-            // Common words to filter out
-            const stopWords = new Set(['the', 'and', 'for', 'with', 'from', 'will', 'this', 'that', 'these', 'those', 'about', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'under', 'again', 'further', 'then', 'once']);
+            const text = `${title || ''} ${description || ''} ${speakers.join(' ')}`.toLowerCase();
 
-            // Extract words and phrases
-            const words = description
-                .toLowerCase()
-                .replace(/[^a-z0-9\s-]/g, ' ')
-                .split(/\s+/)
-                .filter(word => word.length > 3 && !stopWords.has(word));
+            // Define keyword categories by domain/industry/technology
+            const keywordMap = {
+                // Core AI Technologies
+                'AI Agents': ['agent', 'agentic', 'autonomous', 'multi-agent', 'llm agent'],
+                'Machine Learning': ['machine learning', 'ml model', 'deep learning', 'neural network', 'training', 'inference'],
+                'Natural Language': ['nlp', 'language model', 'llm', 'translation', 'multilingual', 'speech', 'voice', 'bhashini'],
+                'Computer Vision': ['computer vision', 'image', 'video', 'visual', 'recognition', 'detection'],
+                'Generative AI': ['generative', 'gen ai', 'chatgpt', 'gpt', 'synthetic', 'content generation'],
 
-            // Count word frequency
-            const frequency = {};
-            words.forEach(word => {
-                frequency[word] = (frequency[word] || 0) + 1;
-            });
+                // Industry Sectors
+                'Healthcare': ['health', 'medical', 'hospital', 'clinical', 'patient', 'diagnosis', 'disease', 'pharma', 'medicine'],
+                'Education': ['education', 'learning', 'student', 'university', 'school', 'teaching', 'curriculum', 'skill'],
+                'Agriculture': ['agricult', 'farm', 'crop', 'soil', 'rural', 'food security', 'agritech'],
+                'Finance': ['financ', 'banking', 'payment', 'credit', 'investment', 'fintech', 'trading'],
+                'Manufacturing': ['manufactur', 'industry', 'factory', 'production', 'supply chain', 'logistics'],
+                'Transportation': ['transport', 'mobility', 'vehicle', 'road', 'traffic', 'automotive'],
 
-            // Get top keywords
-            const sorted = Object.entries(frequency)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 5)
-                .map(([word]) => word.charAt(0).toUpperCase() + word.slice(1));
+                // Cross-cutting Themes
+                'Governance': ['governance', 'policy', 'regulat', 'government', 'public sector', 'civic', 'compliance'],
+                'Ethics & Safety': ['ethic', 'responsible', 'safety', 'trust', 'fairness', 'bias', 'transparency', 'accountability'],
+                'Data & Privacy': ['data', 'privacy', 'security', 'protection', 'gdpr', 'personal data'],
+                'Infrastructure': ['infrastructure', 'compute', 'cloud', 'data center', 'hardware', 'chip', 'gpu'],
+                'Research': ['research', 'academic', 'university', 'lab', 'scientist', 'publication', 'innovation'],
 
-            return sorted;
+                // Application Areas
+                'Climate & Sustainability': ['climate', 'sustainability', 'environment', 'carbon', 'energy', 'green', 'circular'],
+                'Social Impact': ['inclusion', 'equity', 'accessibility', 'disability', 'rural', 'underserved', 'empowerment'],
+                'Digital Public Goods': ['dpi', 'digital public', 'open source', 'commons', 'public infrastructure'],
+                'Skilling & Workforce': ['skill', 'workforce', 'employment', 'job', 'talent', 'training', 'upskill', 'reskill'],
+
+                // Emerging Areas
+                'Startups & Innovation': ['startup', 'entrepreneur', 'venture', 'innovation', 'ecosystem'],
+                'Global South': ['global south', 'developing', 'emerging market', 'africa', 'asia', 'south-south']
+            };
+
+            const matched = [];
+            for (const [keyword, patterns] of Object.entries(keywordMap)) {
+                for (const pattern of patterns) {
+                    if (text.includes(pattern)) {
+                        matched.push(keyword);
+                        break; // Only add once per keyword category
+                    }
+                }
+            }
+
+            // Return up to 5 most relevant keywords
+            return matched.slice(0, 5);
         }
 
         // Load theme from localStorage
@@ -748,7 +774,7 @@
                 ...s,
                 start: s.time.match(/(\d{1,2}:\d{2}\s*[AP]M)/i)?.[1] || 'TBD',
                 end: s.time.match(/-\s*(\d{1,2}:\d{2}\s*[AP]M)/i)?.[1] || s.time.match(/(\d{1,2}:\d{2}\s*[AP]M)/i)?.[1] || 'TBD',
-                keywords: extractKeywords(s.description)
+                keywords: extractKeywords(s.description, s.title, s.speakers)
             }));
         }
 
