@@ -1,177 +1,138 @@
-# India AI Summit Explorer 🇮🇳
+# India AI Summit 2026 - Schedule Viewer
 
-An elegant, Apple-like web app for exploring 500+ sessions from the India AI Impact Summit 2026. Built with minimal dependencies for fast, clean interactions.
-
-![Session Map](docs/hero.png)
+A modern, feature-rich schedule viewer for the India AI Impact Summit 2026 featuring 581 sessions across 6 days (February 16-21, 2026).
 
 ## ✨ Features
 
-- **Interactive Session Map**: Explore sessions visualized as an interactive 2D map with natural clustering
-- **Semantic Search**: Find relevant sessions instantly using natural language queries
-- **Similar Sessions**: Discover related sessions based on AI-powered similarity
-- **Apple-like Design**: Clean, minimal interface with smooth animations and glassmorphism
-- **Zero Backend**: Fully static deployment ready for GitHub Pages or Vercel
+### 🌓 Dark Mode
+- Beautiful dark theme with seamless toggle
+- Preference saved in localStorage
+- Optimized for both light and dark viewing conditions
 
-## 🎨 Design Philosophy
+### 📱 Mobile Responsive
+- Fully responsive design for all screen sizes
+- Touch-optimized interface
+- Scrollable day tabs on mobile
+- Single-column layout for easy reading
 
-- **Extreme simplicity** with white backgrounds and high typography hierarchy
-- **Lots of spacing** for breathing room
-- **Subtle motion** with 200-300ms transitions
-- **No clutter** - just clean, focused content
-- **Inter font** for modern, readable typography
+### 🔍 Advanced Filters
+- **Time-of-Day Filter**: Morning (6AM-12PM), Afternoon (12PM-5PM), Evening (5PM-10PM)
+- **Venue Filter**: Bharat Mandapam, Sushma Swaraj Bhavan, Expo Area
+- **Keyword Search**: Search across titles, descriptions, speakers, and locations
+- All filters work together cumulatively
+
+### ⭐ Session Bookmarking
+- Bookmark your favorite sessions
+- Saved to localStorage (persists across sessions)
+- Works on both mobile and desktop
+- Visual indicators for bookmarked sessions
+
+### 📍 Detailed Location Information
+Sessions display complete venue details:
+- Main venue (Bharat Mandapam / Sushma Swaraj Bhavan)
+- Room type (Auditorium / Meeting Room / Expo Area)
+- Specific room numbers (West Wing Room No. 6, etc.)
+
+### 🎨 Premium Design
+- Poppins font for modern typography
+- Clean, Apple-like UI aesthetic
+- Smooth animations and transitions
+- Organized by time slots
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Node.js 16+ (for frontend)
-- Python 3.8+ (for data pipeline, optional)
-
-### Run Locally
+### Installation
 
 ```bash
-cd summit-explorer
+# Clone the repository
+git clone https://github.com/ankurshnde/IndiaAISummitExplorer.git
+
+# Navigate to project directory
+cd IndiaAISummitExplorer
+
+# Install dependencies
 npm install
+
+# Start development server
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+The app will be available at `http://localhost:5173`
 
-## 📊 Data Pipeline
-
-The data pipeline parses session `.txt` files and generates embeddings with precomputed 2D coordinates.
-
-### Generate Full Dataset
-
-```bash
-cd summit-explorer/..
-pip install -r requirements.txt
-python build_embeddings.py
-```
-
-This will:
-1. Parse all `.txt` files in the directory
-2. Generate embeddings using `sentence-transformers`
-3. Compute UMAP 2D coordinates
-4. Calculate cosine similarity for "similar sessions"
-5. Export `summit-explorer/public/data/sessions.json`
-
-**Note**: The repository includes a sample dataset with 21 sessions for immediate testing.
-
-## 🗂️ Project Structure
-
-```
-.
-├── build_embeddings.py       # Data pipeline script
-├── requirements.txt           # Python dependencies
-├── *.txt                      # Session data files
-└── summit-explorer/
-    ├── public/
-    │   └── data/
-    │       └── sessions.json  # Precomputed session data
-    ├── src/
-    │   ├── components/
-    │   │   ├── CanvasMap.jsx           # Interactive session map
-    │   │   ├── FloatingSearchBar.jsx   # Search interface
-    │   │   ├── SidePanel.jsx           # Session details panel
-    │   │   └── SessionCard.jsx         # Session card component
-    │   ├── App.jsx            # Main application
-    │   └── index.css          # Design system & tokens
-    ├── index.html
-    ├── package.json
-    └── vite.config.js
-```
-
-## 🎯 How It Works
-
-### 1. Session Visualization
-
-Sessions are displayed as dots on a canvas, positioned using UMAP-reduced 2D coordinates from their embeddings. Natural clustering emerges based on semantic similarity.
-
-### 2. Interactions
-
-- **Hover**: See session title tooltip
-- **Click**: Open detailed side panel
-- **Drag**: Pan around the map
-- **Scroll**: Zoom in/out
-- **Search**: Filter sessions by keywords
-
-### 3. Similar Sessions
-
-Each session includes  precomputed similarity scores using cosine similarity on embeddings. The top 5 most similar sessions are displayed in the side panel.
-
-## 🏗️ Building for Production
+### Build for Production
 
 ```bash
 npm run build
 ```
 
-The `dist/` folder will contain the static build ready for deployment.
+The production-ready files will be in the `dist` folder.
 
-### Deploy to GitHub Pages
+## 📊 Data
 
-```bash
-npm run build
-# Copy dist/ contents to gh-pages branch
+- **Total Sessions**: 581
+- **Days Covered**: 6 (16th Feb - 21st Feb 2026)
+- **Main Venues**: 
+  - Bharat Mandapam (multiple halls and rooms)
+  - Sushma Swaraj Bhavan
+  - Expo Areas
+
+## 🛠️ Tech Stack
+
+- **React** - UI framework
+- **Vite** - Build tool and dev server
+- **CSS Variables** - Theme management
+- **localStorage** - Data persistence
+- **Poppins Font** - Typography
+
+## 📱 Usage
+
+1. **Browse Sessions**: Select a date tab to view all sessions for that day
+2. **Filter**: Use the time and venue dropdowns to narrow down sessions
+3. **Search**: Type keywords to find specific topics, speakers, or locations
+4. **Bookmark**: Click the ★ icon to save sessions to your schedule
+5. **Dark Mode**: Toggle theme using the 🌙/☀️ button in the header
+
+## 🎯 Key Benefits
+
+- **Fast**: All data loaded upfront, instant filtering
+- **Static**: No backend required, deploy anywhere
+- **Offline-Ready**: Works after initial load
+- **User-Friendly**: Intuitive interface for quick navigation
+- **Accessible**: Mobile-responsive, touch-optimized
+
+## 📂 Project Structure
+
+```
+summit-explorer/
+├── public/
+│   └── data/
+│       └── sessions.json      # All session data
+├── src/
+│   ├── App.jsx               # Main application component
+│   ├── index.css            # Styles with dark mode support
+│   └── main.jsx             # Entry point
+├── index.html               # HTML template
+└── vite.config.js          # Vite configuration
 ```
 
-### Deploy to Vercel
+## 🌐 Deployment
 
-```bash
-vercel --prod
-```
+This is a static site and can be deployed to:
+- **Vercel**: `vercel deploy`
+- **Netlify**: Drag & drop the `dist` folder
+- **GitHub Pages**: Enable Pages in repository settings
+- **Any static hosting service**
 
-## 📝 Adding New Summit Data
+## 📝 License
 
-1. Add new `.txt` files to the root directory
-2. Run `python build_embeddings.py`
-3. Rebuild frontend: `npm run build`
-
-## 🎨 Design Tokens
-
-```css
---bg-primary: #FFFFFF
---text-primary: #1D1D1F
---accent: #007AFF
---radius-xl: 24px
---shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08)
---font-family: 'Inter', -apple-system, system-ui
-```
-
-## 🔧 Tech Stack
-
-- **Frontend**: React 18 + Vite
-- **Styling**: Vanilla CSS with design tokens
-- **Visualization**: HTML5 Canvas
-- **Data Pipeline**: Python + sentence-transformers + UMAP
-
-## 📦 Bundle Size
-
-Target: < 300KB (gzipped)
-
-Current optimizations:
-- No heavy UI libraries
-- Canvas-based rendering
-- Minimal dependencies
-- Code splitting
-
-## 🤝 Contributing
-
-This is a minimal MVP. Potential enhancements:
-- Dark mode toggle
-- "Surprise me" random session button
-- Export selected sessions
-- Cluster labels
-- Advanced filtering
-
-## 📄 License
-
-MIT
+MIT License - feel free to use for your own events!
 
 ## 🙏 Acknowledgments
 
-Built for the India AI Impact Summit 2026 - exploring the intersection of AI, policy, education, healthcare, agriculture, and economic growth.
+Built for the India AI Impact Summit 2026 - Empowering innovation and collaboration in AI.
 
 ---
 
-**Note**: This application demonstrates how complex datasets can be made accessible through thoughtful design and AI-powered features. The focus is on discovery and exploration rather than overwhelming users with information.
+**Live Demo**: [Coming Soon]
+
+**Questions?** Open an issue on GitHub!
