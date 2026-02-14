@@ -30,8 +30,8 @@ const Hero = ({ sessions }) => {
     return (
         <div className="hero-section">
             <div className="hero-content">
-                <div style={{ background: 'rgba(255,255,255,0.1)', padding: '10px', borderRadius: '8px', marginBottom: '2rem', fontSize: '0.85rem', borderLeft: '4px solid #ff3b30', textAlign: 'left' }}>
-                    <strong>Disclaimer:</strong> This is a fun project (v1.3.1). For official sessions and live updates, please visit <a href="https://impact.indiaai.gov.in/sessions" target="_blank" rel="noopener noreferrer" style={{ color: '#ff3b30', fontWeight: 'bold', textDecoration: 'underline' }}>impact.indiaai.gov.in/sessions</a>.
+                <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '8px', marginBottom: '2rem', fontSize: '0.85rem', borderLeft: '4px solid #ff3b30', textAlign: 'left' }}>
+                    <strong>Note:</strong> This is an independent community project (v1.3.2). For official sessions and real-time updates from the Government of India, please visit <a href="https://impact.indiaai.gov.in/sessions" target="_blank" rel="noopener noreferrer" style={{ color: '#ff3b30', fontWeight: 'bold', textDecoration: 'underline' }}>impact.indiaai.gov.in/sessions</a>.
                 </div>
                 <h2 className="hero-title">Impact Summit Sessions at Various Locations</h2>
                 <div className="hero-subtitle">AI IMPACT SUMMIT 2026</div>

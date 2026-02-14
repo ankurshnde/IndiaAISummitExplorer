@@ -342,6 +342,9 @@ function App() {
           ))
         )}
       </main>
+      <footer style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)', fontSize: '0.9rem', borderTop: '1px solid var(--border)', marginTop: '2rem' }}>
+        build with 💖by <a href="https://bio.site/ankurshinde" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>Ankur Shinde</a>
+      </footer>
     </div>
   );
 }
